@@ -87,6 +87,11 @@
 - AI music community is growing — potential niche audience
 - Monitor platform policies (Spotify, etc.) as they evolve on AI-generated content
 
+## Coding Conventions
+
+- Lowercase for all filenames and extensions (e.g. `band-logo2.png` not `band-logo2.PNG`)
+- Uppercase only where the language requires it (class names, constants, etc.)
+
 ## Decisions Log
 
 | Date | Decision |

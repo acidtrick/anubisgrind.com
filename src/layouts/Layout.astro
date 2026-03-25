@@ -1,0 +1,151 @@
+---
+interface Props {
+  title?: string;
+}
+const { title = "Anubis Grind" } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>{title}</title>
+
+    <!-- Google Fonts: Metal Mania (headings) + Cinzel (subheadings) + Raleway (body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Metal+Mania&family=Cinzel:wght@400;700&family=Raleway:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/music">Music</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/merch">Merch</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <slot />
+
+    <footer>
+      <p class="social-links">
+        <a href="#" aria-label="Instagram">Instagram</a>
+        <span class="divider">|</span>
+        <a href="#" aria-label="TikTok">TikTok</a>
+        <span class="divider">|</span>
+        <a href="#" aria-label="YouTube">YouTube</a>
+      </p>
+      <p class="copyright">&copy; {new Date().getFullYear()} Anubis Grind. All rights reserved.</p>
+    </footer>
+  </body>
+</html>
+
+<style is:global>
+  /* ── Reset & base ───────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:           #0a0808;
+    --surface:      #141010;
+    --surface-2:    #1e1818;
+    --accent-gold:  #c9a84c;
+    --accent-red:   #8b1a1a;
+    --text:         #e8dcc8;
+    --text-muted:   #8a7a6a;
+    --font-heading: 'Metal Mania', cursive;
+    --font-sub:     'Cinzel', serif;
+    --font-body:    'Raleway', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Nav ────────────────────────────────────────────────────── */
+  nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    background: rgba(10, 8, 8, 0.92);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid rgba(201, 168, 76, 0.2);
+    padding: 1rem 2rem;
+  }
+
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2.5rem;
+    justify-content: center;
+  }
+
+  nav a {
+    font-family: var(--font-sub);
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  nav a:hover { color: var(--accent-gold); }
+
+  /* ── Footer ─────────────────────────────────────────────────── */
+  footer {
+    margin-top: auto;
+    text-align: center;
+    padding: 2rem;
+    border-top: 1px solid rgba(201, 168, 76, 0.15);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  .social-links {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+    font-family: var(--font-sub);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+  }
+
+  .social-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .social-links a:hover { color: var(--accent-gold); }
+  .divider { color: var(--accent-red); }
+
+  /* ── Shared section styles ──────────────────────────────────── */
+  section {
+    padding: 5rem 2rem;
+    max-width: 960px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  h1 { font-family: var(--font-heading); }
+  h2 { font-family: var(--font-sub); letter-spacing: 0.1em; text-transform: uppercase; }
+</style>
