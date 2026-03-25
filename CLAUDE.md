@@ -101,6 +101,7 @@
 | 2026-03-25 | Aesthetic: dark/grungy, logo-driven palette |
 | 2026-03-25 | Start with Home page only, other pages as placeholders |
 | 2026-03-25 | Pre-release music: .wav previews via HTML5 audio |
+| 2026-03-25 | Site deployed to Cloudflare Workers — live at anubisgrind.com |
 
 ## Open Questions
 
