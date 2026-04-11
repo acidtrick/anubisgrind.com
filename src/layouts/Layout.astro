@@ -25,7 +25,7 @@ const { title = "Anubis Grind" } = Astro.props;
     <nav>
       <ul>
         <li><a href="/">Home</a></li>
-        <li><a href="/music">Music <span class="coming-soon">Coming Soon</span></a></li>
+        <li><a href="/music">Music</a></li>
         <li><a href="/about">About</a></li>
         <li><a href="/merch">Merch</a></li>
         <li><a href="/contact">Contact</a></li>
@@ -107,14 +107,6 @@ const { title = "Anubis Grind" } = Astro.props;
   }
 
   nav a:hover { color: var(--accent-gold); }
-
-  nav a .coming-soon {
-    font-size: 0.6rem;
-    color: var(--accent-red);
-    letter-spacing: 0.1em;
-    vertical-align: super;
-    margin-left: 0.3em;
-  }
 
   /* ── Footer ─────────────────────────────────────────────────── */
   footer {
