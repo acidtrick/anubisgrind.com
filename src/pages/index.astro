@@ -2,37 +2,16 @@
 import Layout from '../layouts/Layout.astro';
 ---
 <Layout title="Anubis Grind">
-
-  <!-- ── Hero ─────────────────────────────────────────────────── -->
   <section class="hero">
     <div class="hero-inner">
       <img src="/band-logo2.png" alt="Anubis Grind" class="hero-logo" />
     </div>
   </section>
-
-  <!-- ── About ────────────────────────────────────────────────── -->
-  <section class="about">
-    <p>
-      Anubis Grind is a hybrid music project blending human composition with AI-assisted
-      production, rooted in the dark textures of hard rock, alternative and grunge, with
-      atmospheric elements woven throughout.
-    </p>
-    <p>
-      Created by a human multi-instrumentalist and systems architect, the project explores
-      where identity fractures between human soul and synthetic sound.
-    </p>
-    <p>
-      Songs are developed through a recursive process of human writing, performance,
-      and AI reinterpretation, resulting in a sound that feels both familiar and unsettling.
-    </p>
-  </section>
-
 </Layout>
 
 <style>
-  /* ── Hero ───────────────────────────────────────────────────── */
   .hero {
-    position: relative;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -55,20 +34,5 @@ import Layout from '../layouts/Layout.astro';
     width: min(600px, 90vw);
     height: auto;
     filter: drop-shadow(0 0 40px rgba(139, 26, 26, 0.6));
-  }
-
-  /* ── About ──────────────────────────────────────────────────── */
-  .about {
-    max-width: 760px;
-    margin: 0 auto;
-    padding: 5rem 2rem;
-    border-top: 1px solid rgba(201, 168, 76, 0.15);
-  }
-
-  .about p {
-    font-size: 1.1rem;
-    line-height: 1.9;
-    color: var(--text-muted);
-    text-align: center;
   }
 </style>
