@@ -2,22 +2,100 @@
 import Layout from '../layouts/Layout.astro';
 ---
 <Layout title="Contact — Anubis Grind">
-  <section class="placeholder">
+  <section class="contact">
     <h2>Contact</h2>
-    <p>Coming soon.</p>
+    <p class="intro">For inquiries, reach out directly.</p>
+
+    <div class="contact-list">
+      <div class="contact-item">
+        <span class="contact-label">Anubis Grind</span>
+        <a href="mailto:anubisgrind@proton.me" class="contact-email">anubisgrind@proton.me</a>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="contact-item">
+        <span class="contact-label">Null Interval</span>
+        <span class="contact-role">Publishing</span>
+        <a href="mailto:nullinterval@proton.me" class="contact-email">nullinterval@proton.me</a>
+      </div>
+    </div>
   </section>
 </Layout>
 
 <style>
-  .placeholder {
+  .contact {
     min-height: 100vh;
+    max-width: 600px;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding-top: 80px;
+    padding: 8rem 2rem 4rem;
   }
-  h2 { color: var(--accent-gold); margin-bottom: 1rem; }
-  p { color: var(--text-muted); font-family: var(--font-sub); letter-spacing: 0.1em; }
+
+  h2 {
+    color: var(--accent-gold);
+    font-size: 1.4rem;
+    letter-spacing: 0.2em;
+    margin-bottom: 1rem;
+  }
+
+  .intro {
+    color: var(--text-muted);
+    font-family: var(--font-sub);
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 3rem;
+  }
+
+  .contact-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .contact-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .contact-label {
+    font-family: var(--font-sub);
+    font-size: 1rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text);
+  }
+
+  .contact-role {
+    font-family: var(--font-sub);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent-gold);
+  }
+
+  .contact-email {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .contact-email:hover {
+    color: var(--accent-gold);
+  }
+
+  .divider {
+    width: 40px;
+    height: 1px;
+    background: rgba(201, 168, 76, 0.25);
+    margin: 0 auto;
+  }
 </style>
