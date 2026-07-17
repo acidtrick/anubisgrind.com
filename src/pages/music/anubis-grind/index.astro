@@ -1,0 +1,243 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+
+const tracks = [
+  { slug: 'duat', title: 'Duat', duration: '0:54', hasLyrics: false },
+  { slug: 'the-weighing', title: 'The Weighing', duration: '3:25', hasLyrics: true },
+  { slug: 'waking-what-sleeps', title: 'Waking What Sleeps', duration: '4:19', hasLyrics: true },
+  { slug: 'something-lets-us-in', title: 'Something Lets Us In', duration: '3:56', hasLyrics: true },
+  { slug: 'venus-lies', title: 'Venus Lies', duration: '3:58', hasLyrics: true },
+  { slug: 'afterglow', title: 'Afterglow', duration: '3:29', hasLyrics: true },
+  { slug: 'between-two-worlds', title: 'Between Two Worlds', duration: '4:08', hasLyrics: true },
+  { slug: 'without-a-sound', title: 'Without a Sound', duration: '4:29', hasLyrics: true },
+  { slug: 'big-dark-open', title: 'Big Dark Open', duration: '4:50', hasLyrics: true },
+  { slug: 'gravity-flows', title: 'Gravity Flows', duration: '4:58', hasLyrics: true },
+];
+---
+<Layout title="Anubis Grind — Track List">
+  <section class="album">
+    <h1>Anubis Grind</h1>
+    <p class="subtitle">Full Length</p>
+
+    <button id="play-all-btn" class="play-all-btn" type="button">▶ Play Full Album</button>
+
+    <ol class="track-list">
+      {tracks.map((t, i) => (
+        <li class="track" id={`track-${t.slug}`}>
+          <div class="track-info">
+            <span class="track-num">{String(i + 1).padStart(2, '0')}</span>
+            <span class="track-title">{t.title}</span>
+            <span class="track-duration">{t.duration}</span>
+            {t.hasLyrics && (
+              <a class="lyrics-link" href={`/music/anubis-grind/${t.slug}`} target="_blank" rel="noopener">Lyrics</a>
+            )}
+          </div>
+          <audio
+            class="player"
+            id={`audio-${t.slug}`}
+            data-index={i}
+            controls
+            preload="none"
+            src={`https://audio.anubisgrind.com/${t.slug}.wav`}
+          >
+            Your browser does not support the audio element.
+          </audio>
+        </li>
+      ))}
+    </ol>
+  </section>
+</Layout>
+
+<script>
+  const playAllBtn = document.getElementById('play-all-btn') as HTMLButtonElement;
+  const audios = Array.from(document.querySelectorAll<HTMLAudioElement>('audio.player'));
+
+  let sequential = false;
+  let currentIndex = -1;
+
+  function clearHighlight() {
+    document.querySelectorAll('.track.playing').forEach((el) => el.classList.remove('playing'));
+  }
+
+  function resetButton() {
+    playAllBtn.textContent = '▶ Play Full Album';
+  }
+
+  function stopSequential() {
+    sequential = false;
+    currentIndex = -1;
+    clearHighlight();
+    resetButton();
+  }
+
+  function playIndex(i: number) {
+    if (i >= audios.length) {
+      stopSequential();
+      return;
+    }
+    currentIndex = i;
+    clearHighlight();
+    const audio = audios[i];
+    audio.closest('.track')?.classList.add('playing');
+    audio.currentTime = 0;
+    audio.play();
+  }
+
+  audios.forEach((audio, i) => {
+    audio.addEventListener('ended', () => {
+      if (sequential && i === currentIndex) {
+        playIndex(i + 1);
+      }
+    });
+
+    audio.addEventListener('play', () => {
+      audios.forEach((a, j) => {
+        if (j !== i) a.pause();
+      });
+      if (sequential && i === currentIndex) {
+        playAllBtn.textContent = '⏹ Stop Album';
+      } else {
+        sequential = false;
+        clearHighlight();
+        resetButton();
+      }
+    });
+  });
+
+  playAllBtn.addEventListener('click', () => {
+    if (sequential) {
+      audios.forEach((a) => a.pause());
+      stopSequential();
+    } else {
+      sequential = true;
+      playAllBtn.textContent = '⏹ Stop Album';
+      playIndex(0);
+    }
+  });
+</script>
+
+<style>
+  .album {
+    min-height: 100vh;
+    padding: 140px 2rem 5rem;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    text-align: center;
+    color: var(--accent-gold);
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    text-align: center;
+    font-family: var(--font-sub);
+    font-size: 0.85rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 3rem;
+  }
+
+  .track-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .play-all-btn {
+    display: block;
+    margin: 0 auto 3rem;
+    background: transparent;
+    border: 1px solid var(--accent-red);
+    color: var(--text);
+    font-family: var(--font-sub);
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.75rem 2rem;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+  }
+
+  .play-all-btn:hover {
+    color: var(--accent-gold);
+    border-color: var(--accent-gold);
+    background: rgba(201, 168, 76, 0.08);
+  }
+
+  .track {
+    border-bottom: 1px solid rgba(201, 168, 76, 0.15);
+    padding-bottom: 1.5rem;
+    transition: border-color 0.2s;
+  }
+
+  .track.playing {
+    border-color: var(--accent-gold);
+  }
+
+  .track.playing .track-title {
+    color: var(--accent-gold);
+  }
+
+  .track.playing .track-num {
+    color: var(--accent-gold);
+  }
+
+  .track-info {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .track-num {
+    font-family: var(--font-sub);
+    color: var(--accent-red);
+    font-size: 0.9rem;
+    min-width: 1.5rem;
+  }
+
+  .track-title {
+    font-family: var(--font-sub);
+    font-size: 1.1rem;
+    letter-spacing: 0.03em;
+    color: var(--text);
+    flex: 1;
+  }
+
+  .track-duration {
+    font-family: var(--font-sub);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  .lyrics-link {
+    font-family: var(--font-sub);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-decoration: none;
+    border: 1px solid rgba(201, 168, 76, 0.3);
+    padding: 0.25rem 0.75rem;
+    border-radius: 2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .lyrics-link:hover {
+    color: var(--accent-gold);
+    border-color: var(--accent-gold);
+  }
+
+  .player {
+    width: 100%;
+    height: 36px;
+  }
+</style>

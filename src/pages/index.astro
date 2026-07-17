@@ -4,13 +4,17 @@ import Layout from '../layouts/Layout.astro';
 <Layout title="Anubis Grind">
   <section class="hero">
     <div class="hero-inner">
-      <img src="/band-logo2.png" alt="Anubis Grind" class="hero-logo" />
+      <a href="/music/anubis-grind" class="hero-logo-link">
+        <img src="/band-logo2.png" alt="Anubis Grind — view track list" class="hero-logo" />
+      </a>
     </div>
+    <p class="hero-note">An AI Music Experiment</p>
   </section>
 </Layout>
 
 <style>
   .hero {
+    position: relative;
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -22,6 +26,19 @@ import Layout from '../layouts/Layout.astro';
     padding: 120px 2rem 4rem;
   }
 
+  .hero-note {
+    position: absolute;
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    font-family: var(--font-sub);
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
   .hero-inner {
     position: relative;
     z-index: 2;
@@ -30,9 +47,18 @@ import Layout from '../layouts/Layout.astro';
     align-items: center;
   }
 
+  .hero-logo-link {
+    display: block;
+  }
+
   .hero-logo {
     width: min(600px, 90vw);
     height: auto;
     filter: drop-shadow(0 0 40px rgba(139, 26, 26, 0.6));
+    transition: filter 0.3s;
+  }
+
+  .hero-logo-link:hover .hero-logo {
+    filter: drop-shadow(0 0 55px rgba(201, 168, 76, 0.5));
   }
 </style>

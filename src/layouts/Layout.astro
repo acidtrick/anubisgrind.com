@@ -13,11 +13,11 @@ const { title = "Anubis Grind" } = Astro.props;
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>{title}</title>
 
-    <!-- Google Fonts: Metal Mania (headings) + Cinzel (subheadings) + Raleway (body) -->
+    <!-- Google Fonts: Cinzel Decorative (headings) + Cinzel (subheadings) + Raleway (body) + Cormorant Garamond (lyrics) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Metal+Mania&family=Cinzel:wght@400;700&family=Raleway:wght@300;400;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;700&family=Raleway:wght@300;400;600&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap"
       rel="stylesheet"
     />
   </head>
@@ -25,7 +25,7 @@ const { title = "Anubis Grind" } = Astro.props;
     <nav>
       <ul>
         <li><a href="/">Home</a></li>
-        <li><a href="/music">Music</a></li>
+        <li><a href="/music/anubis-grind">Music</a></li>
         <li><a href="/contact">Contact</a></li>
       </ul>
     </nav>
@@ -57,9 +57,10 @@ const { title = "Anubis Grind" } = Astro.props;
     --accent-red:   #8b1a1a;
     --text:         #e8dcc8;
     --text-muted:   #8a7a6a;
-    --font-heading: 'Metal Mania', cursive;
+    --font-heading: 'Cinzel Decorative', cursive;
     --font-sub:     'Cinzel', serif;
     --font-body:    'Raleway', sans-serif;
+    --font-lyrics:  'Cormorant Garamond', serif;
   }
 
   html { scroll-behavior: smooth; }
@@ -144,6 +145,6 @@ const { title = "Anubis Grind" } = Astro.props;
     width: 100%;
   }
 
-  h1 { font-family: var(--font-heading); }
+  h1 { font-family: var(--font-heading); font-weight: 700; }
   h2 { font-family: var(--font-sub); letter-spacing: 0.1em; text-transform: uppercase; }
 </style>

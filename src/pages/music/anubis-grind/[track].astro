@@ -1,0 +1,77 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+
+const lyricsFiles = import.meta.glob('../../../content/lyrics/*.txt', {
+  eager: true,
+  query: '?raw',
+  import: 'default',
+}) as Record<string, string>;
+
+export function getStaticPaths() {
+  const tracks = [
+    { slug: 'the-weighing', title: 'The Weighing' },
+    { slug: 'waking-what-sleeps', title: 'Waking What Sleeps' },
+    { slug: 'something-lets-us-in', title: 'Something Lets Us In' },
+    { slug: 'venus-lies', title: 'Venus Lies' },
+    { slug: 'afterglow', title: 'Afterglow' },
+    { slug: 'between-two-worlds', title: 'Between Two Worlds' },
+    { slug: 'without-a-sound', title: 'Without a Sound' },
+    { slug: 'big-dark-open', title: 'Big Dark Open' },
+    { slug: 'gravity-flows', title: 'Gravity Flows' },
+  ];
+
+  return tracks.map((t) => ({ params: { track: t.slug }, props: { title: t.title } }));
+}
+
+const { track } = Astro.params;
+const { title } = Astro.props;
+
+const lyrics = lyricsFiles[`../../../content/lyrics/${track}.txt`].trim();
+---
+<Layout title={`${title} — Lyrics — Anubis Grind`}>
+  <section class="lyrics-page">
+    <h2>{title}</h2>
+    <pre class="lyrics">{lyrics}</pre>
+    <a class="back-link" href="/music/anubis-grind">&larr; Back to Track List</a>
+  </section>
+</Layout>
+
+<style>
+  .lyrics-page {
+    min-height: 100vh;
+    padding: 140px 2rem 4rem;
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  h2 {
+    color: var(--accent-gold);
+    margin-bottom: 2.5rem;
+  }
+
+  .lyrics {
+    font-family: var(--font-lyrics);
+    font-size: 1.4rem;
+    line-height: 1.9;
+    color: var(--text);
+    white-space: pre-wrap;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-top: 3rem;
+    font-family: var(--font-sub);
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+
+  .back-link:hover {
+    color: var(--accent-gold);
+  }
+</style>
