@@ -73,14 +73,14 @@ const tracks = [
   function playIndex(i: number) {
     if (i >= audios.length) {
       stopSequential();
-      return;
+      return Promise.resolve();
     }
     currentIndex = i;
     clearHighlight();
     const audio = audios[i];
     audio.closest('.track')?.classList.add('playing');
     audio.currentTime = 0;
-    audio.play();
+    return audio.play();
   }
 
   function preloadNext(i: number) {
@@ -126,6 +126,7 @@ const tracks = [
   });
 
   playAllBtn.addEventListener('click', () => {
+    playAllBtn.classList.remove('nudge');
     if (sequential) {
       audios.forEach((a) => a.pause());
       stopSequential();
@@ -135,6 +136,17 @@ const tracks = [
       playIndex(0);
     }
   });
+
+  if (new URLSearchParams(location.search).get('autoplay') === '1') {
+    sequential = true;
+    playAllBtn.textContent = '⏹ Stop Album';
+    playIndex(0)?.catch(() => {
+      // Browser blocked autoplay without a direct gesture on this page —
+      // fall back to nudging the user to press the button themselves.
+      stopSequential();
+      playAllBtn.classList.add('nudge');
+    });
+  }
 </script>
 
 <style>
@@ -190,6 +202,21 @@ const tracks = [
     color: var(--accent-gold);
     border-color: var(--accent-gold);
     background: rgba(201, 168, 76, 0.08);
+  }
+
+  .play-all-btn.nudge {
+    animation: nudge-pulse 1.2s ease-in-out infinite;
+  }
+
+  @keyframes nudge-pulse {
+    0%, 100% {
+      border-color: var(--accent-red);
+      box-shadow: 0 0 0 rgba(201, 168, 76, 0);
+    }
+    50% {
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 12px rgba(201, 168, 76, 0.5);
+    }
   }
 
   .track {
