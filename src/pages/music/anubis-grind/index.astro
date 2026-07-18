@@ -83,7 +83,28 @@ const tracks = [
     audio.play();
   }
 
+  function preloadNext(i: number) {
+    const next = audios[i + 1];
+    if (next && next.preload !== 'auto') {
+      next.preload = 'auto';
+      next.load();
+    }
+  }
+
+  const PRELOAD_LEAD_SECONDS = 12;
+
   audios.forEach((audio, i) => {
+    audio.addEventListener('timeupdate', () => {
+      if (
+        sequential &&
+        i === currentIndex &&
+        audio.duration &&
+        audio.duration - audio.currentTime < PRELOAD_LEAD_SECONDS
+      ) {
+        preloadNext(i);
+      }
+    });
+
     audio.addEventListener('ended', () => {
       if (sequential && i === currentIndex) {
         playIndex(i + 1);
