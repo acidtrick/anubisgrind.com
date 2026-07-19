@@ -52,7 +52,6 @@ const tracks = [
   const playAllBtn = document.getElementById('play-all-btn') as HTMLButtonElement;
   const audios = Array.from(document.querySelectorAll<HTMLAudioElement>('audio.player'));
 
-  let sequential = false;
   let currentIndex = -1;
 
   function clearHighlight() {
@@ -63,16 +62,14 @@ const tracks = [
     playAllBtn.textContent = '▶ Play Full Album';
   }
 
-  function stopSequential() {
-    sequential = false;
-    currentIndex = -1;
-    clearHighlight();
-    resetButton();
-  }
-
+  // Every track always rides into the next one when it ends — starting
+  // playback anywhere in the list (not just via Play Full Album) plays
+  // the rest of the album in order.
   function playIndex(i: number) {
     if (i >= audios.length) {
-      stopSequential();
+      currentIndex = -1;
+      clearHighlight();
+      resetButton();
       return Promise.resolve();
     }
     currentIndex = i;
@@ -95,55 +92,54 @@ const tracks = [
 
   audios.forEach((audio, i) => {
     audio.addEventListener('timeupdate', () => {
-      if (
-        sequential &&
-        i === currentIndex &&
-        audio.duration &&
-        audio.duration - audio.currentTime < PRELOAD_LEAD_SECONDS
-      ) {
+      if (i === currentIndex && audio.duration && audio.duration - audio.currentTime < PRELOAD_LEAD_SECONDS) {
         preloadNext(i);
       }
     });
 
     audio.addEventListener('ended', () => {
-      if (sequential && i === currentIndex) {
-        playIndex(i + 1);
-      }
+      playIndex(i + 1);
     });
 
     audio.addEventListener('play', () => {
       audios.forEach((a, j) => {
         if (j !== i) a.pause();
       });
-      if (sequential && i === currentIndex) {
-        playAllBtn.textContent = '⏹ Stop Album';
-      } else {
-        sequential = false;
-        clearHighlight();
-        resetButton();
-      }
+      currentIndex = i;
+      clearHighlight();
+      audio.closest('.track')?.classList.add('playing');
+      playAllBtn.textContent = '⏹ Stop Album';
+    });
+
+    audio.addEventListener('pause', () => {
+      // Deferred so a same-tick auto-advance into the next track (which
+      // synchronously sets that track's paused=false) isn't mistaken for
+      // the album actually stopping.
+      setTimeout(() => {
+        if (audios.every((a) => a.paused)) {
+          currentIndex = -1;
+          clearHighlight();
+          resetButton();
+        }
+      }, 0);
     });
   });
 
   playAllBtn.addEventListener('click', () => {
     playAllBtn.classList.remove('nudge');
-    if (sequential) {
+    if (audios.some((a) => !a.paused)) {
       audios.forEach((a) => a.pause());
-      stopSequential();
     } else {
-      sequential = true;
-      playAllBtn.textContent = '⏹ Stop Album';
       playIndex(0);
     }
   });
 
   if (new URLSearchParams(location.search).get('autoplay') === '1') {
-    sequential = true;
-    playAllBtn.textContent = '⏹ Stop Album';
     playIndex(0)?.catch(() => {
       // Browser blocked autoplay without a direct gesture on this page —
       // fall back to nudging the user to press the button themselves.
-      stopSequential();
+      clearHighlight();
+      resetButton();
       playAllBtn.classList.add('nudge');
     });
   }
